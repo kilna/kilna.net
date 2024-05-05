@@ -1,4 +1,10 @@
 baseURL = 'https://contact.kilna.com/'
 languageCode = 'en-us'
-title = 'Contact Kilna'
-theme = 'purehugo'
+title = 'Kilna'
+theme = 'contact-kilna'
+
+[params]
+githubName = "kilna"
+linkedinName = "kilna"
+description = "Contact"
+
