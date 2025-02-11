@@ -1,5 +1,4 @@
-python>=3.7
-pelican>=4.0  
+pelican>=4.0
 markdown>=3
 typogrify>=2
 beautifulsoup4>=4
