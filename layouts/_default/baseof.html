@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+  <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="author" content="{{ .Site.Params.author }}">
+  
+  {{ if .Site.Params.canonical_url }}
+  <link rel="canonical" href="{{ .Site.Params.canonical_url }}{{ .RelPermalink }}">
+  {{ end }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  {{ $styles := resources.Get "css/main.css" | resources.Fingerprint "sha384" }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+  {{ $scripts := resources.Get "js/main.js" | resources.Fingerprint "sha384" }}
+  <script defer src="{{ $scripts.RelPermalink }}" integrity="{{ $scripts.Data.Integrity }}"></script>
+</head>
+<body>
+  {{ block "main" . }}{{ end }}
+  <script>
+    document.addEventListener('click', function (e) {
+      const anchor = e.target.closest('a[data-clipboard]');
+      if (!anchor) return;
+      const text = anchor.getAttribute('data-clipboard');
+      if (!text) return;
+      e.preventDefault();
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard for pasting');
+      }).catch(() => {
+        alert('Copied to clipboard for pasting');
+      });
+    }, { passive: false });
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{{/*
+  Icon Shortcode
+  Usage in content: {{< icon name="github" class="my-class" >}}
+  
+  Parameters:
+  - name: (required) Icon name - github, linkedin, email, twitter, instagram, etc.
+  - class: (optional) Additional CSS classes - use CSS to set --icon-scale for custom sizing
+*/}}
+{{ partial "components/icon.html" (dict
+    "icon" (.Get "name")
+    "class" (.Get "class")
+) -}}

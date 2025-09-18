@@ -1,0 +1,172 @@
+baseURL: https://kilna.net
+title: Kilna
+languageCode: en-us
+
+# Modern Hugo Configuration
+enableGitInfo: true
+enableRobotsTXT: true
+enableEmoji: true
+
+# Performance optimizations
+timeout: "30s"
+enableInlineShortcodes: true
+
+# Exclude files/dirs from processing and publication
+ignoreFiles: ['\\.af(photo|design)$', '^scripts/', '^source/', '(^|/)\.', '~$']
+
+# Asset processing
+imaging:
+  resampleFilter: "CatmullRom"
+  quality: 85
+  anchor: "Smart"
+
+# Markup configuration
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+        title: true
+  highlight:
+    style: "github"
+    lineNos: false
+    tabWidth: 2
+
+params:
+  description: "Contact information for Kilna"
+  canonical_url: https://kilna.net
+  author: "Kilna, Anthony"
+  email: kilna@kilna.com
+
+outputs:
+  page: ["HTML"]
+  home: ["HTML"]
+  section: ["HTML"]
+  taxonomy: ["HTML"]
+  term: ["HTML"]
+
+outputFormats:
+  plain:
+    mediaType: "text/plain"
+    baseName: "plain"
+    isPlainText: true
+    permalinkable: false
+  simple:
+    mediaType: "text/html"
+    baseName: "simple"
+    isPlainText: false
+    permalinkable: false
+
+mediaTypes:
+  "text/plain":
+    suffixes: ["txt"]
+
+menus:
+  main:
+  - identifier: home
+    weight: 1
+    name: Home
+    url: /
+  
+  contact:
+  - identifier: vcf
+    weight: 1
+    name: Add to Contacts
+    url: /kilna.vcf
+    params:
+      icon: contacts
+  - identifier: email
+    weight: 2
+    name: Email
+    url: mailto:kilna@kilna.com
+    params:
+      icon: email
+      style: "--bg:#6b7280;--hover-bg:#4b5563;"
+  - identifier: phone
+    weight: 3
+    name: Phone or Text
+    url: tel:+16195498189
+    params:
+      icon: phone
+      style: "--bg:#1db054;--hover-bg:#159444;"
+  - identifier: telegram
+    weight: 4
+    name: Telegram
+    url: https://t.me/kilnamusic
+    params:
+      icon: telegram
+      style: "--bg:#26A5E4;--hover-bg:#1b86bd;"
+  - identifier: whatsapp
+    weight: 5
+    name: WhatsApp
+    url: https://wa.me/16195498189
+    params:
+      icon: whatsapp
+      style: "--bg:#25D366;--hover-bg:#1db054;"
+  - identifier: signal
+    weight: 6
+    name: Signal
+    url: https://signal.me/#p/+16195498189
+    params:
+      icon: signal
+      style: "--bg:#3a76f0;--hover-bg:#2e60c4;"
+  - identifier: discord
+    weight: 7
+    name: Discord
+    url: "#discord"
+    params:
+      icon: discord
+      clipboard: "kilna"
+      style: "--bg:#4f5ae6;--hover-bg:#3e49b8;"
+  social:
+  - identifier: facebook
+    weight: 1
+    name: Facebook
+    url: https://facebook.com/kilna
+    params:
+      icon: facebook
+      style: "--bg:#1877F2;--hover-bg:#0f5dc2;"
+  - identifier: instagram
+    weight: 2
+    name: Instagram
+    url: https://instagram.com/kilnamusic
+    params:
+      icon: instagram
+      style: "background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);"
+  - identifier: threads
+    weight: 3
+    name: Threads
+    url: https://threads.net/kilnamusic
+    params:
+      icon: threads
+      style: "--bg:#000;--hover-bg:#111;"
+  - identifier: bluesky
+    weight: 4
+    name: Bluesky
+    url: https://bsky.app/profile/kilnamusic.bsky.social
+    params:
+      icon: bluesky
+      style: "--bg:#0085FF;--hover-bg:#006fd1;"
+  - identifier: tiktok
+    weight: 5
+    name: TikTok
+    url: https://tiktok.com/@kilnamusic
+    params:
+      icon: tiktok
+      style: "--bg:#000;--hover-bg:#000;--shadow:4px 4px 0 #25F4EE,-4px -4px 0 #FE2C55;--hover-shadow:6px 6px 0 #25F4EE,-6px -6px 0 #FE2C55;"
+  - identifier: linkedin
+    weight: 10
+    name: LinkedIn
+    url: https://linkedin.com/in/kilna
+    params:
+      icon: linkedin
+      style: "--bg:#0077b5;--hover-bg:#005885;"
+  - identifier: github
+    weight: 11
+    name: GitHub
+    url: https://github.com/kilna
+    params:
+      icon: github
+      style: "--bg:#24292e;--hover-bg:#1a1e22;"

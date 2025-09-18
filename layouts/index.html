@@ -1,0 +1,74 @@
+{{ define "main" }}
+
+{{ $photo := resources.Get "kilna.jpg" }}
+{{ with $photo }}
+<div class="home-photo">
+  <img src="{{ .RelPermalink }}" alt="Kilna" loading="lazy" decoding="async">
+  
+</div>
+{{ end }}
+
+{{ if .Content }}
+<div class="intro">
+{{ .Content }}
+</div>
+{{ end }}
+
+<div class="social-links">
+  <h2>Contact Kilna</h2>
+  
+  {{ range .Site.Menus.contact }}
+  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+    {{ $icon := .Identifier }}
+    {{ if .Params.icon }}
+      {{ $icon = .Params.icon }}
+    {{ end }}
+    {{ partial "components/icon.html" (dict "icon" $icon) }}
+    {{ .Name }}
+  </a>
+  {{ end }}
+</div>
+
+<div class="social-links">
+  <h2>Connect with Kilna</h2>
+  
+  {{ range .Site.Menus.social }}
+  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+    {{ $icon := .Identifier }}
+    {{ if .Params.icon }}
+      {{ $icon = .Params.icon }}
+    {{ end }}
+    {{ partial "components/icon.html" (dict "icon" $icon) }}
+    {{ .Name }}
+  </a>
+  {{ end }}
+</div>
+
+<h2>Kilna's Projects</h2>
+{{ $projects := where .Site.RegularPages "Section" "projects" }}
+{{ range sort $projects "Weight" }}
+<div class="project-summary">
+  <h3 class="project-title">
+    {{ .Title }}
+  </h3>
+  {{ if .Description }}
+  <p class="project-description">{{ .Description }}</p>
+  {{ end }}
+
+  {{ .Content }}
+
+  {{ if .Params.links }}
+  <div class="project-links">
+    {{ range .Params.links }}
+    {{ partial "components/button.html" (dict
+        "url" .url
+        "text" .name
+        "target" "_blank"
+        "class" "project-link"
+    ) }}
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}

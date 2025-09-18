@@ -1,0 +1,55 @@
+{{- if not (and .url .text) -}}{{- return -}}{{- end -}}
+{{- if and (isset . "if") (not .if) -}}{{- return -}}{{- end -}}
+{{- $url := .url -}}
+{{- $target := .target | default "_blank" -}}
+{{- $text := .text -}}
+{{- $icon := .icon -}}
+{{- $alt := .alt | default $text -}}
+{{- $title := .title | default $text -}}
+{{- $class := .class | default "button" -}}
+{{- if ne $class "button" -}}
+  {{- $class = printf "button %s" $class -}}
+{{- end -}}
+
+{{- /* Function to determine icon based on URL */ -}}
+{{- $getIconFromUrl := "" -}}
+{{- if strings.Contains $url "github.com" -}}
+  {{- $getIconFromUrl = "github" -}}
+{{- else if strings.Contains $url "linkedin.com" -}}
+  {{- $getIconFromUrl = "linkedin" -}}
+{{- else if strings.Contains $url "twitter.com" -}}
+  {{- $getIconFromUrl = "twitter" -}}
+{{- else if strings.Contains $url "x.com" -}}
+  {{- $getIconFromUrl = "twitter" -}}
+{{- else if strings.Contains $url "instagram.com" -}}
+  {{- $getIconFromUrl = "instagram" -}}
+{{- else if strings.Contains $url "youtube.com" -}}
+  {{- $getIconFromUrl = "youtube" -}}
+{{- else if strings.Contains $url "mailto:" -}}
+  {{- $getIconFromUrl = "email" -}}
+{{- else if strings.Contains $url "tel:" -}}
+  {{- $getIconFromUrl = "phone" -}}
+{{- else -}}
+  {{- $getIconFromUrl = "link" -}}
+{{- end -}}
+
+{{- /* Set default icon if not specified */ -}}
+{{- if not $icon -}}
+  {{- $icon = $getIconFromUrl -}}
+{{- end -}}
+
+{{- /* Function to render an icon */ -}}
+{{- define "renderIcon" -}}
+  {{- if ne .icon "none" -}}
+    {{- partial "components/icon.html" (dict
+        "icon" .icon
+        "alt" .alt
+        "title" .title
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+<a href="{{ $url }}" target="{{ $target }}" class="{{ $class }}">
+  {{- template "renderIcon" (dict "icon" $icon "alt" $alt "title" $title) -}}
+  <span>{{- .text -}}</span>
+</a>

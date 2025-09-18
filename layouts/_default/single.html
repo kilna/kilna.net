@@ -1,0 +1,24 @@
+{{ define "main" }}
+<a href="/" class="back-link">← Back to home</a>
+
+<h1>{{ .Title }}</h1>
+
+{{ if .Description }}
+<p class="project-description">{{ .Description }}</p>
+{{ end }}
+
+{{ .Content }}
+
+{{ if .Params.links }}
+<div class="project-links">
+  {{ range .Params.links }}
+  {{ partial "components/button.html" (dict
+      "url" .url
+      "text" .name
+      "target" "_blank"
+      "class" "project-link"
+  ) }}
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}
