@@ -44,6 +44,21 @@
   {{ end }}
 </div>
 
+<div class="social-links">
+  <h2>Professional</h2>
+  
+  {{ range .Site.Menus.professional }}
+  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+    {{ $icon := .Identifier }}
+    {{ if .Params.icon }}
+      {{ $icon = .Params.icon }}
+    {{ end }}
+    {{ partial "components/icon.html" (dict "icon" $icon) }}
+    {{ .Name }}
+  </a>
+  {{ end }}
+</div>
+
 <h2>Kilna's Projects</h2>
 {{ $projects := where .Site.RegularPages "Section" "projects" }}
 {{ range sort $projects "Weight" }}

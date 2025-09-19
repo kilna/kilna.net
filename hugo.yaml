@@ -156,17 +156,25 @@ menus:
     params:
       icon: tiktok
       style: "--bg:#000;--hover-bg:#000;--shadow:4px 4px 0 #25F4EE,-4px -4px 0 #FE2C55;--hover-shadow:6px 6px 0 #25F4EE,-6px -6px 0 #FE2C55;"
-  - identifier: linkedin
-    weight: 10
-    name: LinkedIn
-    url: https://linkedin.com/in/kilna
-    params:
-      icon: linkedin
-      style: "--bg:#0077b5;--hover-bg:#005885;"
   - identifier: github
-    weight: 11
+    weight: 10
     name: GitHub
     url: https://github.com/kilna
     params:
       icon: github
       style: "--bg:#24292e;--hover-bg:#1a1e22;"
+  professional:
+  - identifier: linkedin
+    weight: 1
+    name: LinkedIn
+    url: https://linkedin.com/in/kilna
+    params:
+      icon: linkedin
+      style: "--bg:#0077b5;--hover-bg:#005885;"
+  - identifier: imdb
+    weight: 2
+    name: IMDb
+    url: https://www.imdb.com/name/nm4671136/
+    params:
+      icon: imdb
+      style: "--bg:#f5c518;--hover-bg:#d4a015;"

@@ -2,28 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://kilna.net/projects/companies/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/projects/companies/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/projects/48hfp/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/projects/48hfp/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/projects/decknroll/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/projects/decknroll/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/qr/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/qr/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/projects/</loc>
-    <lastmod>2024-05-05T11:00:00-07:00</lastmod>
+    <loc>http://localhost:54068/categories/</loc>
   </url><url>
-    <loc>https://kilna.net/categories/</loc>
+    <loc>http://localhost:54068/discord/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/discord/</loc>
+    <loc>http://localhost:54068/projects/</loc>
+    <lastmod>2025-09-18T16:40:22-07:00</lastmod>
   </url><url>
-    <loc>https://kilna.net/tags/</loc>
+    <loc>http://localhost:54068/tags/</loc>
   </url>
 </urlset>
