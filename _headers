@@ -1,5 +1,5 @@
 # MeCard files - set proper MIME type for Cloudflare Pages
-/kilna.mecard
+/mecard
   Content-Type: text/mecard
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, OPTIONS

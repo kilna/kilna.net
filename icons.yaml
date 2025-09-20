@@ -1,7 +1,9 @@
 ---
+# https://icon-sets.iconify.design/
 contacts: mdi:card-account-details-outline
 email: mdi:email
 phone: mdi:phone
+vcard: streamline-ultimate:business-card-hand-2-bold
 whatsapp: mdi:whatsapp
 telegram: mdi:telegram
 signal: simple-icons:signal

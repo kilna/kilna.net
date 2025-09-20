@@ -1,0 +1,7 @@
+{{/*
+  MECARD template - generates vCard contact information
+  Accessible at /mecard
+*/}}
+{{- if eq .Kind "page" -}}
+MECARD:N:{{ .Params.name }};ORG:{{ .Params.organization }};TEL:{{ .Params.phone }};EMAIL:{{ .Params.email }};URL:{{ .Params.url }};;
+{{- end -}}

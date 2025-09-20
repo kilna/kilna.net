@@ -1,0 +1,31 @@
+{{/*
+  vCard template - generates full vCard contact information with photo
+  Accessible at /vcard
+*/}}
+{{- if eq .Kind "page" -}}
+BEGIN:VCARD
+VERSION:3.0
+N:{{ .Params.lastname }};{{ .Params.firstname }};;;
+FN:{{ .Params.fullname }}
+ORG:{{ .Params.organization }}
+TITLE:{{ .Params.title }}
+{{- if .Params.birthday }}
+BDAY:{{ .Params.birthday }}
+{{- end }}
+{{- if .Params.address }}
+ADR:;;{{ .Params.address.city }};{{ .Params.address.state }};;{{ .Params.address.country }}
+{{- end }}
+TEL;TYPE=CELL:{{ .Params.phone }}
+TEL;TYPE=WORK:{{ .Params.phone }}
+EMAIL;TYPE=INTERNET:{{ .Params.email }}
+EMAIL;TYPE=WORK:{{ .Params.email }}
+URL:{{ .Params.url }}
+PHOTO;VALUE=URI:{{ .Params.photo_url }}
+{{- range .Params.social_profiles }}
+X-SOCIALPROFILE;type={{ .type }}:{{ .url }}
+{{- end }}
+{{- range .Params.messaging }}
+IMPP;X-SERVICE-TYPE={{ .service }}:{{ .url }}
+{{- end }}
+END:VCARD
+{{- end -}}

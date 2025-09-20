@@ -1,0 +1,42 @@
+---
+title: "Kilna vCard"
+slug: "vcard"
+outputs: ["vcard"]
+params:
+  firstname: "Anthony"
+  lastname: "Kilna"
+  fullname: "Kilna, Anthony"
+  organization: "San Diego 48 Hour Film Project / Deck n Roll / Kilna Companies"
+  title: "Multi-Domain Creator"
+  birthday: "1973-03-04"
+  address:
+    city: "San Diego"
+    state: "CA"
+    country: "USA"
+  phone: "+16195498189"
+  email: "kilna@kilna.com"
+  url: "https://kilna.net"
+  photo_url: "https://kilna.net/kilna.jpg"
+  social_profiles:
+    - type: "Facebook"
+      url: "https://facebook.com/kilna"
+    - type: "Instagram"
+      url: "https://instagram.com/kilnamusic"
+    - type: "Threads"
+      url: "https://threads.net/kilnamusic"
+    - type: "Bluesky"
+      url: "https://bsky.app/profile/kilnamusic.bsky.social"
+    - type: "LinkedIn"
+      url: "https://linkedin.com/in/kilna"
+    - type: "GitHub"
+      url: "https://github.com/kilna"
+    - type: "TikTok"
+      url: "https://tiktok.com/@kilnamusic"
+  messaging:
+    - service: "WhatsApp"
+      url: "https://wa.me/16195498189"
+    - service: "Telegram"
+      url: "https://t.me/kilna"
+    - service: "Signal"
+      url: "https://signal.me/#p/+16195498189"
+---

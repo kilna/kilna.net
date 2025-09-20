@@ -59,10 +59,24 @@ outputFormats:
     baseName: "simple"
     isPlainText: false
     permalinkable: false
+  mecard:
+    mediaType: "text/mecard"
+    baseName: "mecard"
+    isPlainText: true
+    permalinkable: true
+  vcard:
+    mediaType: "text/vcard"
+    baseName: "vcard"
+    isPlainText: true
+    permalinkable: true
 
 mediaTypes:
   "text/plain":
     suffixes: ["txt"]
+  "text/mecard":
+    suffixes: ["mecard"]
+  "text/vcard":
+    suffixes: ["vcf"]
 
 menus:
   main:
@@ -75,16 +89,17 @@ menus:
   - identifier: mecard
     weight: 1
     name: Add to Contacts
-    url: /kilna.mecard
+    url: /mecard
     params:
       icon: contacts
+      style: "font-size: 1.8rem; animation: bounce 4s infinite;"
   - identifier: email
     weight: 2
     name: Email
     url: mailto:kilna@kilna.com
     params:
       icon: email
-      style: "--bg:#6b7280;--hover-bg:#4b5563;"
+      style: "--bg:#dc2626;--hover-bg:#b91c1c;"
   - identifier: phone
     weight: 3
     name: Phone or Text
@@ -92,35 +107,42 @@ menus:
     params:
       icon: phone
       style: "--bg:#1db054;--hover-bg:#159444;"
-  - identifier: telegram
+  - identifier: vcard
     weight: 4
+    name: Download vCard
+    url: /vcard
+    params:
+      icon: vcard
+      style: "--bg:#f97316;--hover-bg:#ea580c;"
+  - identifier: telegram
+    weight: 5
     name: Telegram
     url: https://t.me/kilnamusic
     params:
       icon: telegram
       style: "--bg:#26A5E4;--hover-bg:#1b86bd;"
   - identifier: whatsapp
-    weight: 5
+    weight: 6
     name: WhatsApp
     url: https://wa.me/16195498189
     params:
       icon: whatsapp
       style: "--bg:#25D366;--hover-bg:#1db054;"
   - identifier: signal
-    weight: 6
+    weight: 7
     name: Signal
     url: https://signal.me/#p/+16195498189
     params:
       icon: signal
       style: "--bg:#3a76f0;--hover-bg:#2e60c4;"
   - identifier: discord
-    weight: 7
+    weight: 8
     name: Discord
     url: "#discord"
     params:
       icon: discord
       clipboard: "kilna"
-      style: "--bg:#4f5ae6;--hover-bg:#3e49b8;"
+      style: "--bg:#8b5cf6;--hover-bg:#7c3aed;"
   social:
   - identifier: facebook
     weight: 1
