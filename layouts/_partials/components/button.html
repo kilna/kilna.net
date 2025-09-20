@@ -49,7 +49,7 @@
   {{- end -}}
 {{- end -}}
 
-<a href="{{ $url }}" target="{{ $target }}" class="{{ $class }}">
+<a href="{{ $url | safeURL }}" target="{{ $target }}" class="{{ $class }}">
   {{- template "renderIcon" (dict "icon" $icon "alt" $alt "title" $title) -}}
   <span>{{- .text -}}</span>
 </a>

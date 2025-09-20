@@ -18,7 +18,7 @@
   <h2>Contact Kilna</h2>
   
   {{ range .Site.Menus.contact }}
-  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
     {{ $icon := .Identifier }}
     {{ if .Params.icon }}
       {{ $icon = .Params.icon }}
@@ -33,7 +33,7 @@
   <h2>Connect with Kilna</h2>
   
   {{ range .Site.Menus.social }}
-  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
     {{ $icon := .Identifier }}
     {{ if .Params.icon }}
       {{ $icon = .Params.icon }}
@@ -48,7 +48,7 @@
   <h2>Professional</h2>
   
   {{ range .Site.Menus.professional }}
-  <a href="{{ .URL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
     {{ $icon := .Identifier }}
     {{ if .Params.icon }}
       {{ $icon = .Params.icon }}
