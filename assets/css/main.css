@@ -29,6 +29,23 @@ h2 {
   color: #333;
 }
 
+/* Section heading styles - standardized for all h2 headings */
+h2 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(145deg, #ccc, #bbb);
+  padding: 1rem 2rem;
+  margin: 4rem 0 1.5rem 0;
+  border-radius: 12px;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0,0,0,0.15),
+    inset -2px -2px 4px rgba(255,255,255,0.2),
+    0 8px 16px rgba(0,0,0,0.4);
+  border: 1px solid #aaa;
+  width: 100%;
+  font-weight: 500;
+}
+
 h3 {
   font-size: 2rem;
   font-weight: 500;
@@ -51,9 +68,8 @@ a:hover {
 }
 
 .project-summary {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 4px solid #000;
+  margin-bottom: 3rem;
+  padding-bottom: 0;
 }
 
 .project-summary:last-child {
@@ -101,10 +117,9 @@ a:hover {
   height: 1em;
 }
 
-.social-links {
-  margin-top: 1.5rem;
-  padding-top: 0;
-  border-top: none;
+.button-container {
+  max-width: 100%;
+  margin: 0 auto 2rem auto;
 }
 
 .social-button {
@@ -149,8 +164,10 @@ a:hover {
 .home-photo img {
   width: 70%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 50%;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  object-fit: cover;
+  aspect-ratio: 1;
 }
 
 .social-button .icon {
@@ -172,6 +189,19 @@ a:hover {
 }
 
 .back-link:hover { color: #000; }
+
+.page-image {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem 0;
+}
+
+.page-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
 
 @media (max-width: 480px) {
   body { padding: 1rem 0.75rem; }

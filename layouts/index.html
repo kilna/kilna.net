@@ -14,52 +14,49 @@
 </div>
 {{ end }}
 
-<div class="social-links">
-  <h2>Contact Kilna</h2>
-  
-  {{ range .Site.Menus.contact }}
-  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-    {{ $icon := .Identifier }}
-    {{ if .Params.icon }}
-      {{ $icon = .Params.icon }}
-    {{ end }}
-    {{ partial "components/icon.html" (dict "icon" $icon) }}
-    {{ .Name }}
-  </a>
+<h2>Kilna Contact</h2>
+<div class="button-container">
+{{ range .Site.Menus.contact }}
+<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  {{ $icon := .Identifier }}
+  {{ if .Params.icon }}
+    {{ $icon = .Params.icon }}
   {{ end }}
+  {{ partial "components/icon.html" (dict "icon" $icon) }}
+  {{ .Name }}
+</a>
+{{ end }}
 </div>
 
-<div class="social-links">
-  <h2>Connect with Kilna</h2>
-  
-  {{ range .Site.Menus.social }}
-  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-    {{ $icon := .Identifier }}
-    {{ if .Params.icon }}
-      {{ $icon = .Params.icon }}
-    {{ end }}
-    {{ partial "components/icon.html" (dict "icon" $icon) }}
-    {{ .Name }}
-  </a>
+<h2>Kilna Social</h2>
+<div class="button-container">
+{{ range .Site.Menus.social }}
+<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  {{ $icon := .Identifier }}
+  {{ if .Params.icon }}
+    {{ $icon = .Params.icon }}
   {{ end }}
+  {{ partial "components/icon.html" (dict "icon" $icon) }}
+  {{ .Name }}
+</a>
+{{ end }}
 </div>
 
-<div class="social-links">
-  <h2>Professional</h2>
-  
-  {{ range .Site.Menus.professional }}
-  <a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-    {{ $icon := .Identifier }}
-    {{ if .Params.icon }}
-      {{ $icon = .Params.icon }}
-    {{ end }}
-    {{ partial "components/icon.html" (dict "icon" $icon) }}
-    {{ .Name }}
-  </a>
+<h2>Kilna Professional</h2>
+<div class="button-container">
+{{ range .Site.Menus.professional }}
+<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
+  {{ $icon := .Identifier }}
+  {{ if .Params.icon }}
+    {{ $icon = .Params.icon }}
   {{ end }}
+  {{ partial "components/icon.html" (dict "icon" $icon) }}
+  {{ .Name }}
+</a>
+{{ end }}
 </div>
 
-<h2>Kilna's Projects</h2>
+<h2>Kilna Projects</h2>
 {{ $projects := where .Site.RegularPages "Section" "projects" }}
 {{ range sort $projects "Weight" }}
 <div class="project-summary">

@@ -7,6 +7,12 @@
 <p class="project-description">{{ .Description }}</p>
 {{ end }}
 
+{{ if .Params.image }}
+<div class="page-image">
+  <img src="{{ .RelPermalink }}{{ .Params.image }}" alt="{{ .Title }}" loading="lazy" decoding="async">
+</div>
+{{ end }}
+
 {{ .Content }}
 
 {{ if .Params.links }}
