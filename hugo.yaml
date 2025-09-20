@@ -39,6 +39,7 @@ params:
   canonical_url: https://kilna.net
   author: "Kilna, Anthony"
   email: kilna@kilna.com
+  favicon: "/kilna.jpg"
 
 outputs:
   page: ["HTML"]

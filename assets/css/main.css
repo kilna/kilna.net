@@ -162,9 +162,9 @@ a:hover {
 }
 
 .home-photo img {
-  width: 70%;
+  width: 100%;
   height: auto;
-  border-radius: 50%;
+  border-radius: 20px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   object-fit: cover;
   aspect-ratio: 1;
