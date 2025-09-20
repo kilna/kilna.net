@@ -72,10 +72,10 @@ menus:
     url: /
   
   contact:
-  - identifier: vcf
+  - identifier: mecard
     weight: 1
     name: Add to Contacts
-    url: /kilna.vcf
+    url: /kilna.mecard
     params:
       icon: contacts
   - identifier: email
@@ -157,13 +157,6 @@ menus:
     params:
       icon: tiktok
       style: "--bg:#000;--hover-bg:#000;--shadow:4px 4px 0 #25F4EE,-4px -4px 0 #FE2C55;--hover-shadow:6px 6px 0 #25F4EE,-6px -6px 0 #FE2C55;"
-  - identifier: github
-    weight: 10
-    name: GitHub
-    url: https://github.com/kilna
-    params:
-      icon: github
-      style: "--bg:#24292e;--hover-bg:#1a1e22;"
   professional:
   - identifier: linkedin
     weight: 1
@@ -179,3 +172,10 @@ menus:
     params:
       icon: imdb
       style: "--bg:#f5c518;--hover-bg:#d4a015;"
+  - identifier: github
+    weight: 10
+    name: GitHub
+    url: https://github.com/kilna
+    params:
+      icon: github
+      style: "--bg:#24292e;--hover-bg:#1a1e22;"

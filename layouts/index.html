@@ -17,42 +17,21 @@
 <h2>Kilna Contact</h2>
 <div class="button-container">
 {{ range .Site.Menus.contact }}
-<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-  {{ $icon := .Identifier }}
-  {{ if .Params.icon }}
-    {{ $icon = .Params.icon }}
-  {{ end }}
-  {{ partial "components/icon.html" (dict "icon" $icon) }}
-  {{ .Name }}
-</a>
+{{ partial "components/social-button.html" . }}
 {{ end }}
 </div>
 
 <h2>Kilna Social</h2>
 <div class="button-container">
 {{ range .Site.Menus.social }}
-<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-  {{ $icon := .Identifier }}
-  {{ if .Params.icon }}
-    {{ $icon = .Params.icon }}
-  {{ end }}
-  {{ partial "components/icon.html" (dict "icon" $icon) }}
-  {{ .Name }}
-</a>
+{{ partial "components/social-button.html" . }}
 {{ end }}
 </div>
 
 <h2>Kilna Professional</h2>
 <div class="button-container">
 {{ range .Site.Menus.professional }}
-<a href="{{ .URL | safeURL }}" class="social-button {{ .Identifier }}" {{ if and (not (hasPrefix .URL "mailto:")) (not (hasPrefix .URL "tel:")) (not (strings.HasSuffix .URL ".vcf")) }}target="_blank" rel="noopener"{{ end }} {{ if strings.HasSuffix .URL ".vcf" }}download{{ end }} {{ with .Params.clipboard }}data-clipboard="{{ . }}"{{ end }} {{ with .Params.style }}style="{{ . | safeCSS }}"{{ end }}>
-  {{ $icon := .Identifier }}
-  {{ if .Params.icon }}
-    {{ $icon = .Params.icon }}
-  {{ end }}
-  {{ partial "components/icon.html" (dict "icon" $icon) }}
-  {{ .Name }}
-</a>
+{{ partial "components/social-button.html" . }}
 {{ end }}
 </div>
 

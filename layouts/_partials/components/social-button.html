@@ -1,0 +1,15 @@
+{{- $url := .URL | safeURL -}}
+{{- $identifier := .Identifier -}}
+{{- $name := .Name -}}
+{{- $icon := $identifier -}}
+{{- if .Params.icon -}}
+  {{- $icon = .Params.icon -}}
+{{- end -}}
+
+{{- /* Determine if link should open in new tab */ -}}
+{{- $shouldOpenInNewTab := and (not (hasPrefix $url "mailto:")) (not (hasPrefix $url "tel:")) (not (strings.HasSuffix $url ".mecard")) -}}
+
+<a href="{{ $url }}" class="social-button {{ $identifier }}"{{ if $shouldOpenInNewTab }} target="_blank" rel="noopener"{{ end }}{{ if strings.HasSuffix $url ".mecard" }} download{{ end }}{{ with .Params.clipboard }} data-clipboard="{{ . }}"{{ end }}{{ with .Params.style }} style="{{ . | safeCSS }}"{{ end }}>
+  {{ partial "components/icon.html" (dict "icon" $icon) }}
+  {{ $name }}
+</a>

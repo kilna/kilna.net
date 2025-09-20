@@ -15,14 +15,16 @@
   {{ end }}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   {{ $styles := resources.Get "css/main.css" | resources.Fingerprint "sha384" }}
   <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
   {{ $scripts := resources.Get "js/main.js" | resources.Fingerprint "sha384" }}
   <script defer src="{{ $scripts.RelPermalink }}" integrity="{{ $scripts.Data.Integrity }}"></script>
 </head>
 <body>
-  {{ block "main" . }}{{ end }}
+  <div class="content-container">
+    {{ block "main" . }}{{ end }}
+  </div>
   <script>
     document.addEventListener('click', function (e) {
       const anchor = e.target.closest('a[data-clipboard]');

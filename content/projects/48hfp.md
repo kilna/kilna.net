@@ -3,7 +3,7 @@ title: "San Diego 48 Hour Film Project"
 weight: 10
 date: 2024-05-05T11:00:00-07:00
 draft: false
-description: "Producer of the San Diego 48 Hour Film Project"
+description: "Competition and Film Festival - City Producer"
 links:
   - name: "SanDiego48.com"
     url: "https://SanDiego48.com"

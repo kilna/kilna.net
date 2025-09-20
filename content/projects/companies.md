@@ -3,7 +3,7 @@ title: "Kilna Companies"
 weight: 1
 date: 2024-05-05T11:00:00-07:00
 draft: false
-description: "Creative and technology studio"
+description: "Creative and Technology Studio - Owner and Operator"
 links:
   - name: Kilna Companies Web Site
     url: https://kilna.com

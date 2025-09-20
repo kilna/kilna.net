@@ -9,21 +9,57 @@ body {
   font-size: 1.5rem;
   line-height: 1.6;
   color: #333;
-  background: #fff;
-  max-width: 600px;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.content-container {
+  background: rgba(255, 255, 255, 0.85);
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 3rem;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  font-size: 2.5rem;
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-  color: #000;
-  text-transform: uppercase;
+  font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  margin: 0.5rem;
+  color: #609;
+  text-align: center;
+  text-shadow: 
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff,
+    2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 h2 {
+  font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   font-size: 2.5rem;
   font-weight: 400;
   margin: 2rem 0 1rem 0;
@@ -36,29 +72,29 @@ h2 {
   color: white;
   background: linear-gradient(145deg, #ccc, #bbb);
   padding: 1rem 2rem;
-  margin: 4rem 0 2.5rem 0;
+  margin: 4rem -5rem 2.5rem -5rem;
   border-radius: 12px;
   box-shadow: 
     inset -2px -2px 4px rgba(0,0,0,0.15),
     inset 2px 2px 4px rgba(255,255,255,0.2),
     0 8px 16px rgba(0,0,0,0.4);
   border: 1px solid #aaa;
-  width: 100%;
+  width: calc(100% + 10rem);
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 h3 {
+  font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   font-size: 2rem;
   font-weight: 500;
   margin: 1.5rem 0 1rem 0;
   color: #444;
-  text-transform: uppercase;
 }
 
 p {
   margin-bottom: 1rem;
   color: #666;
+  text-align: center;
 }
 
 a {
@@ -130,16 +166,16 @@ a:hover {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.5rem;
   margin-bottom: 0.75rem;
   background: var(--bg, #000);
   box-shadow: var(--shadow, none);
   color: #fff;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 500;
   transition: all 0.2s;
   gap: 0.8rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .social-button:hover {
@@ -206,11 +242,19 @@ a:hover {
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
-@media (max-width: 480px) {
-  body { padding: 1rem 0.75rem; }
-  h1 { font-size: 2rem; }
+/* Responsive font scaling - Desktop and Mobile only */
+@media (max-width: 880px) {
+  body { font-size: 1rem; }
+  h1 { font-size: 3rem; }
+  h2 { font-size: 1.6rem; padding: 0.3rem; margin: 4rem -3rem 2.5rem -3rem; width: calc(100% + 6rem);}
+  h3 { font-size: 1.2em; }
+  .content-container { 
+    max-width: 90%;
+    padding: 1.5rem 1.5rem; 
+  }
   .project-links { flex-direction: column; }
   .project-link { text-align: center; }
+  .social-button { font-size: 1.2rem; }
 }
 
 
