@@ -96,24 +96,26 @@ menus:
   - identifier: email
     weight: 2
     name: Email
+    description: "kilna@kilna.com"
     url: mailto:kilna@kilna.com
     params:
       icon: email
-      style: "--bg:#dc2626;--hover-bg:#b91c1c;"
+      style: "--bg:#b91c1c;--hover-bg:#991b1b;"
   - identifier: phone
     weight: 3
     name: Phone or Text
+    description: "619-549-8189"
     url: tel:+16195498189
     params:
       icon: phone
-      style: "--bg:#1db054;--hover-bg:#159444;"
+      style: "--bg:#166534;--hover-bg:#14532d;"
   - identifier: vcard
     weight: 4
     name: Download vCard
     url: /vcard
     params:
       icon: vcard
-      style: "--bg:#f97316;--hover-bg:#ea580c;"
+      style: "--bg:#d97706;--hover-bg:#b45309;"
   - identifier: telegram
     weight: 5
     name: Telegram
@@ -164,7 +166,7 @@ menus:
     url: https://threads.net/kilnamusic
     params:
       icon: threads
-      style: "--bg:#000;--hover-bg:#111;"
+      style: "--bg:#000;--hover-bg:#111;background:linear-gradient(#000,#000) padding-box,linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%) border-box;border:6px solid transparent;"
   - identifier: bluesky
     weight: 4
     name: Bluesky

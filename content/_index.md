@@ -7,8 +7,8 @@ draft: false
 # Kilna
 
 **Kilna** is a multi-domain creator with an interest in film, art, games, music
-and technology. His legal name is *Anthony Kilna*, but he perfers to be
-addressed by last name, Kilna. In many contexts he will list his last name
+and technology.
+
+**What's in a name?** His legal name is *Anthony Kilna*, but he strongly perfers
+to be addressed by last name, Kilna. In many contexts he will list his last name
 first.
-
-
