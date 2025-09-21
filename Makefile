@@ -1,10 +1,7 @@
 # Simple Hugo Makefile for contact-kilna
 SHELL := /usr/bin/env bash
-SERVER_PORT := 4291
-CLOUDFLARE_ACCOUNT_ID := 046e8f301fab8b218d3f51110cc7034f
-CLOUDFLARE_PAGES_PROJECT := kilna-net
 #PARAMS := --disableFastRender --logLevel debug --printPathWarnings --printUnusedTemplates
-PARAMS := --disableFastRender --port $(SERVER_PORT)
+PARAMS := --disableFastRender --port $$SERVER_PORT
 
 # Set HUGO_BASEURL for Cloudflare Pages deployment
 ifeq ($(CF_PAGES),true)
@@ -27,10 +24,10 @@ tool-plugins:
 	./scripts/tool-plugins.sh
 
 server: kill-server
-	hugo server $(PARAMS) | ./scripts/open-hugo-url.sh
+	hugo server $(PARAMS) | ./scripts/open-server.sh
 
 kill-server:
-	lsof -ti:$(SERVER_PORT) | xargs kill -9 2>/dev/null || true
+	lsof -ti:$$SERVER_PORT | xargs kill -9 2>/dev/null || true
 
 clean:
 	rm -rf public
@@ -38,14 +35,14 @@ clean:
 deploy: build
 	git add -A
 	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
-	git push | ./scripts/open-deploy.sh $(CLOUDFLARE_PAGES_PROJECT)
+	git push | ./scripts/open-deploy.sh $$CLOUDFLARE_PAGES_PROJECT
 
 preview: build
-	wrangler pages deploy ./public --project-name=$(CLOUDFLARE_PAGES_PROJECT) \
+	wrangler pages deploy ./public --project-name=$$CLOUDFLARE_PAGES_PROJECT \
 		| ./scripts/open-preview.sh
 
 dash:
-	open https://dash.cloudflare.com/$(CLOUDFLARE_ACCOUNT_ID)/pages/view/$(CLOUDFLARE_PAGES_PROJECT)
+	open https://dash.cloudflare.com/$$CLOUDFLARE_ACCOUNT_ID/pages/view/$$CLOUDFLARE_PAGES_PROJECT
 
 help:
 	@echo "Available targets:"

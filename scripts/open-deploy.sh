@@ -45,11 +45,23 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
   if [ -n "$URL" ]; then
     echo
     echo "Deployment URL: $URL"
+    echo "Tailing build logs while waiting for deployment..."
+    
+    # Start tailing the deployment logs in the background
+    wrangler pages deployment tail --project-name="$PROJECT_NAME" &
+    TAIL_PID=$!
+    
+    # Wait for deployment to be ready
     echo -n "Waiting for deployment to be ready."
     while curl -s "$URL" | grep -q "Nothing is here yet"; do
       echo -n "."
       sleep 1
     done
+    
+    # Stop tailing once deployment is ready
+    kill $TAIL_PID 2>/dev/null || true
+    wait $TAIL_PID 2>/dev/null || true
+    
     echo
     echo "Deployment ready! Opening $URL"
     open "$URL"
