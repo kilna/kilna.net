@@ -67,7 +67,17 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     fi
     
     # Get deployment ID from wrangler output
-    DEPLOYMENT_ID=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null | grep "$URL_HASH" | head -1 | awk '{print $1}' || echo "")
+    # Wrangler outputs a table format, we need to extract the ID from the first column
+    # Skip the header lines and find the row with our URL hash
+    DEPLOYMENT_ID=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null | \
+      grep -A 1000 "│ Id" | \
+      grep "$URL_HASH" | \
+      head -1 | \
+      sed 's/│/ /g' | \
+      awk '{print $1}' | \
+      sed 's/[[:space:]]*//g' || echo "")
+    
+    echo "Debug: URL hash: '$URL_HASH', Deployment ID: '$DEPLOYMENT_ID'"
     
     if [ -z "$DEPLOYMENT_ID" ]; then
       echo "Error: Could not find deployment ID for URL hash $URL_HASH" >&2
