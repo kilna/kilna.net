@@ -1,6 +1,8 @@
 baseURL: https://kilna.net
 title: Kilna
 languageCode: en-us
+# TEMPORARY SYNTAX ERROR FOR TESTING
+invalid_yaml: [unclosed_bracket
 
 # Modern Hugo Configuration
 enableGitInfo: true
