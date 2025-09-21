@@ -75,7 +75,7 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
       
       if [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
         # Use Cloudflare API to get deployment details
-        DEPLOYMENT_RESPONSE=$(curl -s -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN:-}" \
+        DEPLOYMENT_RESPONSE=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
           "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PAGES_PROJECT/deployments" 2>/dev/null || echo "")
       
         if [ -n "$DEPLOYMENT_RESPONSE" ]; then
