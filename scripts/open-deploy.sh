@@ -26,6 +26,19 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
       | head -1 \
       || echo ""
   )
+  
+  # If we can't find the specific commit, try the most recent deployment
+  if [ -z "$URL" ] && [ $ELAPSED -gt 10 ]; then
+    echo
+    echo "Could not find deployment for commit $COMMIT_HASH, trying most recent..."
+    URL=$(
+      wrangler pages deployment list 2>/dev/null \
+        | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
+        | head -1 \
+        || echo ""
+    )
+  fi
+  
   [ -n "$URL" ] && break
   echo -n "."
   sleep 1
