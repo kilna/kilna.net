@@ -22,8 +22,10 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
   if [ $ELAPSED -eq 0 ]; then
     echo
     echo "Debug: Looking for commit hash: $COMMIT_HASH"
-    echo "Debug: First few lines of wrangler output:"
-    wrangler pages deployment list 2>/dev/null | head -3
+    echo "Debug: Testing wrangler authentication..."
+    wrangler whoami
+    echo "Debug: Wrangler deployment list output:"
+    wrangler pages deployment list 2>&1 | head -10
   fi
   
   # Look for deployment with matching commit hash
