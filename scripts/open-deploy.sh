@@ -57,26 +57,30 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo
     echo "Deployment URL: $URL"
     
-    # Get deployment ID and start log tailing
+    # Get deployment ID and start log tailing (required)
     echo "Getting deployment details from wrangler..."
     URL_HASH=$(echo "$URL" | grep -o '[a-f0-9]\{8\}' | head -1)
     
-    if [ -n "$URL_HASH" ]; then
-      # Get deployment ID from wrangler output
-      DEPLOYMENT_ID=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null | grep "$URL_HASH" | head -1 | awk '{print $1}' || echo "")
-      
-      if [ -n "$DEPLOYMENT_ID" ]; then
-        echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
-        
-        # Start tailing the deployment logs in the background
-        wrangler pages deployment tail --project-name="$CLOUDFLARE_PAGES_PROJECT" --deployment-id="$DEPLOYMENT_ID" &
-        TAIL_PID=$!
-      else
-        echo "Could not find deployment ID for URL hash $URL_HASH"
-      fi
-    else
-      echo "Missing URL hash"
+    if [ -z "$URL_HASH" ]; then
+      echo "Error: Could not extract URL hash from deployment URL: $URL" >&2
+      exit 1
     fi
+    
+    # Get deployment ID from wrangler output
+    DEPLOYMENT_ID=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null | grep "$URL_HASH" | head -1 | awk '{print $1}' || echo "")
+    
+    if [ -z "$DEPLOYMENT_ID" ]; then
+      echo "Error: Could not find deployment ID for URL hash $URL_HASH" >&2
+      echo "Available deployments:" >&2
+      wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" >&2
+      exit 1
+    fi
+    
+    echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
+    
+    # Start tailing the deployment logs in the background
+    wrangler pages deployment tail --project-name="$CLOUDFLARE_PAGES_PROJECT" "$DEPLOYMENT_ID" &
+    TAIL_PID=$!
     
     # Wait for deployment to be ready
     echo -n "Waiting for deployment to be ready."
