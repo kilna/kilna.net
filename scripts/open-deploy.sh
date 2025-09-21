@@ -18,6 +18,14 @@ echo -n "Getting deployment URL."
 TIMEOUT=60
 ELAPSED=0
 while [ $ELAPSED -lt $TIMEOUT ]; do
+  # Debug: show what we're looking for
+  if [ $ELAPSED -eq 0 ]; then
+    echo
+    echo "Debug: Looking for commit hash: $COMMIT_HASH"
+    echo "Debug: First few lines of wrangler output:"
+    wrangler pages deployment list 2>/dev/null | head -3
+  fi
+  
   # Look for deployment with matching commit hash
   URL=$(
     wrangler pages deployment list 2>/dev/null \
