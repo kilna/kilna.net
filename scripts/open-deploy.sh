@@ -21,14 +21,28 @@ done
 echo "Waiting for Cloudflare Pages deployment..."
 echo -n "Getting deployment URL."
 
-while true; do
+# Try to get the deployment URL with a timeout
+TIMEOUT=60  # 60 seconds timeout
+ELAPSED=0
+
+while [ $ELAPSED -lt $TIMEOUT ]; do
   # Get the first deployment URL from the list (most recent)
   # Look for URLs that end with .pages.dev to avoid partial matches
-  URL=$(wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null | grep -o 'https://[^[:space:]]*\.pages\.dev' | head -1 || echo "")
+  # Get the deployment list and extract URLs, handling table formatting
+  # Use a more flexible approach to find URLs that might be split across lines
+  DEPLOYMENT_OUTPUT=$(wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null)
+  URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' | head -1 || echo "")
+  
+  # If that doesn't work, try to reconstruct URLs from the table
   if [ -z "$URL" ]; then
-    echo -n "."
-    sleep 3
-  else
+    # Look for the hash part and project name separately
+    HASH=$(echo "$DEPLOYMENT_OUTPUT" | grep -o 'https://[a-f0-9]\{8\}\.' | head -1 | sed 's|https://||' | sed 's|\.$||')
+    if [ -n "$HASH" ]; then
+      URL="https://${HASH}.${PROJECT_NAME}.pages.dev"
+    fi
+  fi
+  
+  if [ -n "$URL" ]; then
     echo
     echo "Deployment URL: $URL"
     echo -n "Waiting for deployment to be ready."
@@ -39,6 +53,15 @@ while true; do
     echo
     echo "Deployment ready! Opening $URL"
     open "$URL"
-    break
+    exit 0
   fi
+  
+  echo -n "."
+  sleep 3
+  ELAPSED=$((ELAPSED + 3))
 done
+
+echo
+echo "Timeout reached. Deployment may still be processing."
+echo "Check the Cloudflare Pages dashboard:"
+echo "https://dash.cloudflare.com/046e8f301fab8b218d3f51110cc7034f/pages/view/$PROJECT_NAME"

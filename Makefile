@@ -44,6 +44,9 @@ preview: build
 	wrangler pages deploy ./public --project-name=$(CLOUDFLARE_PAGES_PROJECT) \
 		| ./scripts/open-preview.sh
 
+dash:
+	open https://dash.cloudflare.com/$(CLOUDFLARE_ACCOUNT_ID)/pages/view/$(CLOUDFLARE_PAGES_PROJECT)
+
 help:
 	@echo "Available targets:"
 	@echo "  build   - Build the site"
