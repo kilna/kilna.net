@@ -102,17 +102,10 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo "Debug: Found status: '$STATUS'"
   fi
   
-  # Check for success states
-  if echo "$STATUS" | grep -qiE "^(Active|Deployed|Ready|Success)"; then
+  # Check for failure/skipped states
+  if echo "$STATUS" | grep -qiE "^(fail|skip)"; then
     echo
-    echo "Deployment successful! Opening $URL"
-    exec open "$URL"
-  fi
-  
-  # Check for failure states
-  if echo "$STATUS" | grep -qiE "^(Failed|Error|Cancelled|Timeout)"; then
-    echo
-    echo "Deployment failed with status: $STATUS" >&2
+    echo "Deployment failed/skipped with status: $STATUS" >&2
     if [ -n "$BUILD_URL" ]; then
       echo "Opening build URL to check build details..."
       exec open "$BUILD_URL"
@@ -122,18 +115,17 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     fi
   fi
   
-  # Check for building/in-progress states
-  if echo "$STATUS" | grep -qiE "^(Building|Deploying|In Progress|Pending|Queued)"; then
-    # Continue waiting
-    echo -n "."
-    sleep 2
-    ELAPSED=$((ELAPSED + 2))
-  else
-    # Unknown status, wait a bit and check again
-    echo -n "."
-    sleep 1
-    ELAPSED=$((ELAPSED + 1))
+  # Check for success states (timestamps like "just now", "X minutes ago", "X hours ago")
+  if echo "$STATUS" | grep -qiE " ago$"; then
+    echo
+    echo "Deployment successful! Opening $URL"
+    exec open "$URL"
   fi
+  
+  # Everything else (Active, Building, Deploying, waiting states, etc.) - keep waiting
+  echo -n "."
+  sleep 2
+  ELAPSED=$((ELAPSED + 2))
 done
 
 echo
