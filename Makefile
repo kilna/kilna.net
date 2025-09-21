@@ -15,7 +15,7 @@ export HUGO_BASEURL=http://localhost:$(SERVER_PORT)
 -include .env
 endif
 
-.PHONY: build tool-plugins server launch clean deploy cloudflare cloudflare-api help icons
+.PHONY: build tool-plugins server launch clean deploy dash help icons
 
 build: tool-plugins
 	hugo
@@ -35,14 +35,14 @@ clean:
 deploy: build
 	git add -A
 	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
-	git push | ./scripts/open-deploy.sh $$CLOUDFLARE_PAGES_PROJECT
+	git push | ./scripts/open-deploy.sh
 
 preview: build
 	wrangler pages deploy ./public --project-name=$$CLOUDFLARE_PAGES_PROJECT \
 		| ./scripts/open-preview.sh
 
 dash:
-	open https://dash.cloudflare.com/$$CLOUDFLARE_ACCOUNT_ID/pages/view/$$CLOUDFLARE_PAGES_PROJECT
+	./scripts/open-dash.sh
 
 help:
 	@echo "Available targets:"
