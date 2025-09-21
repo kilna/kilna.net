@@ -1,5 +1,6 @@
 # Simple Hugo Makefile for contact-kilna
 SHELL := /usr/bin/env bash
+SERVER_PORT := 4291
 
 # Set HUGO_BASEURL for Cloudflare Pages deployment
 ifeq ($(CF_PAGES),true)
@@ -9,37 +10,35 @@ else
 export HUGO_BASEURL=https://$(CF_PAGES_BRANCH).kilna.net
 endif
 else
+export HUGO_BASEURL=http://localhost:$(SERVER_PORT)
 -include .env
 endif
 
 .PHONY: build server clean deploy help icons launch launch-auto prebuild
 
-prebuild:
-	@if [ "$$CF_PAGES" != "true" ]; then \
-		echo "This target is intended only for Cloudflare Pages pre-build"; \
-		echo "This is called by .cloudflare/scripts/pre_build.sh"; \
-		exit 1; \
-	fi
-	asdf plugin add yq https://github.com/mikefarah/asdf-yq || true
-
 build:
-	yq --help
 	hugo
 
-server:
-	hugo server --disableFastRender
+server: kill-server
+	 hugo server --disableFastRender 
 
-launch:
-	@echo "Starting Hugo server and auto-detecting URL..."
+kill-server:
+	lsof -ti:$(SERVER_PORT) | xargs kill -9 2>/dev/null || true
+
+open-wait:
+	@echo "Waiting for Hugo server to start..."
 	@hugo server --disableFastRender --logLevel=error 2>&1 | \
-		while IFS= read -r line; do \
-			echo "$$line"; \
-			if echo "$$line" | grep -q "Local:"; then \
-				URL=$$(echo "$$line" | sed -n 's/.*Local: *\(http[^ ]*\).*/\1/p'); \
-				echo "Opening $$URL"; \
-				open "$$URL"; \
-			fi; \
-		done
+	while IFS= read -r line; do \
+		echo "$$line"; \
+		if echo "$$line" | grep -q "Local:"; then \
+			URL=$$(echo "$$line" | sed -n 's/.*Local: *\(http[^ ]*\).*/\1/p'); \
+			echo "Opening $$URL"; \
+			open "$$URL"; \
+		fi; \
+	done
+
+open:
+	open http://localhost:$(SERVER_PORT)
 
 clean:
 	rm -rf public
