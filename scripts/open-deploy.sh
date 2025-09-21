@@ -81,20 +81,63 @@ if [ -z "$URL" ]; then
 fi
 
 echo
-echo -n "Waiting for deployment to be ready."
+echo -n "Waiting for deployment to complete."
 TIMEOUT=60
 ELAPSED=0
 while [ $ELAPSED -lt $TIMEOUT ]; do
-  if curl -s "$URL" | grep -qv "Nothing is here yet"; then
+  # Get the status for our specific deployment
+  STATUS=$(
+    wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null \
+      | grep "$COMMIT_HASH" \
+      | awk -F'│' '{print $6}' \
+      | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' \
+      | head -1 \
+      || echo ""
+  )
+  
+  # Debug output on first iteration
+  if [ $ELAPSED -eq 0 ]; then
+    echo
+    echo "Debug: Checking deployment status..."
+    echo "Debug: Found status: '$STATUS'"
+  fi
+  
+  # Check for success states
+  if echo "$STATUS" | grep -qiE "^(Active|Deployed|Ready|Success)"; then
+    echo
+    echo "Deployment successful! Opening $URL"
     exec open "$URL"
   fi
-  echo -n "."
-  sleep 1
-  ELAPSED=$((ELAPSED + 1))
+  
+  # Check for failure states
+  if echo "$STATUS" | grep -qiE "^(Failed|Error|Cancelled|Timeout)"; then
+    echo
+    echo "Deployment failed with status: $STATUS" >&2
+    if [ -n "$BUILD_URL" ]; then
+      echo "Opening build URL to check build details..."
+      exec open "$BUILD_URL"
+    else
+      echo "No build URL found" >&2
+      exit 1
+    fi
+  fi
+  
+  # Check for building/in-progress states
+  if echo "$STATUS" | grep -qiE "^(Building|Deploying|In Progress|Pending|Queued)"; then
+    # Continue waiting
+    echo -n "."
+    sleep 2
+    ELAPSED=$((ELAPSED + 2))
+  else
+    # Unknown status, wait a bit and check again
+    echo -n "."
+    sleep 1
+    ELAPSED=$((ELAPSED + 1))
+  fi
 done
 
 echo
-echo "Error: Deployment URL not ready within $TIMEOUT seconds" >&2
+echo "Deployment timed out after $TIMEOUT seconds" >&2
 if [ -n "$BUILD_URL" ]; then
   echo "Opening build URL to check build status..."
   exec open "$BUILD_URL"
