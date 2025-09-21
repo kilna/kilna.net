@@ -25,12 +25,13 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo "Debug: Testing wrangler authentication..."
     wrangler whoami
     echo "Debug: Wrangler deployment list output:"
-    wrangler pages deployment list 2>&1 | head -10
+    (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>&1 | head -10
   fi
   
   # Look for deployment with matching commit hash
+  # Ensure we're in the project directory where wrangler.toml exists
   URL=$(
-    wrangler pages deployment list 2>/dev/null \
+    (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>/dev/null \
       | grep "$COMMIT_HASH" \
       | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
       | head -1 \
@@ -42,7 +43,7 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo
     echo "Could not find deployment for commit $COMMIT_HASH, trying most recent..."
     URL=$(
-      wrangler pages deployment list 2>/dev/null \
+      (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>/dev/null \
         | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
         | head -1 \
         || echo ""
