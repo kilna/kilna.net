@@ -1,6 +1,8 @@
 # Simple Hugo Makefile for contact-kilna
 SHELL := /usr/bin/env bash
 SERVER_PORT := 4291
+#PARAMS := --disableFastRender --logLevel debug --printPathWarnings --printUnusedTemplates
+PARAMS := --disableFastRender --port $(SERVER_PORT)
 
 # Set HUGO_BASEURL for Cloudflare Pages deployment
 ifeq ($(CF_PAGES),true)
@@ -14,37 +16,37 @@ export HUGO_BASEURL=http://localhost:$(SERVER_PORT)
 -include .env
 endif
 
-.PHONY: build server clean deploy help icons launch launch-auto prebuild
+.PHONY: build tool-plugins server launch clean deploy cloudflare cloudflare-api help icons
 
-build:
+build: tool-plugins
 	hugo
 
+tool-plugins:
+	./scripts/tool-plugins.sh
+
 server: kill-server
-	 hugo server --disableFastRender 
+	hugo server $(PARAMS)
+
+launch: kill-server
+	hugo server $(PARAMS) | ./scripts/open-hugo-url.sh
 
 kill-server:
 	lsof -ti:$(SERVER_PORT) | xargs kill -9 2>/dev/null || true
-
-open-wait:
-	@echo "Waiting for Hugo server to start..."
-	@hugo server --disableFastRender --logLevel=error 2>&1 | \
-	while IFS= read -r line; do \
-		echo "$$line"; \
-		if echo "$$line" | grep -q "Local:"; then \
-			URL=$$(echo "$$line" | sed -n 's/.*Local: *\(http[^ ]*\).*/\1/p'); \
-			echo "Opening $$URL"; \
-			open "$$URL"; \
-		fi; \
-	done
-
-open:
-	open http://localhost:$(SERVER_PORT)
 
 clean:
 	rm -rf public
 
 deploy: build
 	@echo "Site built successfully. Ready for deployment to Cloudflare Pages."
+	git add -A
+	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
+	git push
+
+cloudflare:
+	./scripts/cloudflare.sh
+
+cloudflare-api:
+	./scripts/cloudflare.sh api
 
 help:
 	@echo "Available targets:"
@@ -54,9 +56,10 @@ help:
 	@echo "  prebuild   - Setup dependencies for Cloudflare Pages"
 	@echo "  clean      - Remove generated files"
 	@echo "  deploy     - Build site for deployment"
+	@echo "  cloudflare - Open Cloudflare Pages deployment dashboard"
+	@echo "  cloudflare-api - Find and open specific deployment via API (requires CLOUDFLARE_API_TOKEN)"
 	@echo "  help       - Show this help message"
 	@echo "  icons      - Download/refresh SVG icons from icons.yaml"
 
 icons:
-	./scripts/icons.sh -f
-
+	./scripts/icons.sh
