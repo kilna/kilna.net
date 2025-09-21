@@ -34,7 +34,7 @@ clean:
 
 deploy: build
 	git add -A
-	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
+	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)" --allow-empty
 	git push | ./scripts/open-deploy.sh
 
 preview: build
