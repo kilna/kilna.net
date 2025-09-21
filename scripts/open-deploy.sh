@@ -77,3 +77,4 @@ echo
 echo "Timeout reached. Deployment may still be processing."
 echo "Check the Cloudflare Pages dashboard:"
 echo "https://dash.cloudflare.com/046e8f301fab8b218d3f51110cc7034f/pages/view/$PROJECT_NAME"
+
