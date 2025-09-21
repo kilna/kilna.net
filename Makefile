@@ -12,7 +12,15 @@ else
 -include .env
 endif
 
-.PHONY: build server clean deploy help icons launch launch-auto
+.PHONY: build server clean deploy help icons launch launch-auto prebuild
+
+prebuild:
+	@if [ "$$CF_PAGES" != "true" ]; then \
+		echo "This target is intended only for Cloudflare Pages pre-build"; \
+		echo "This is called by .cloudflare/scripts/pre_build.sh"; \
+		exit 1; \
+	fi
+	asdf plugin add yq https://github.com/mikefarah/asdf-yq || true
 
 build:
 	yq --help
@@ -43,8 +51,8 @@ help:
 	@echo "Available targets:"
 	@echo "  build      - Build the site"
 	@echo "  server     - Start development server"
-	@echo "  launch     - Start server on port 1313 and open browser"
-	@echo "  launch-auto- Start server and auto-detect URL to open"
+	@echo "  launch     - Start server and auto-detect URL to open"
+	@echo "  prebuild   - Setup dependencies for Cloudflare Pages"
 	@echo "  clean      - Remove generated files"
 	@echo "  deploy     - Build site for deployment"
 	@echo "  help       - Show this help message"
@@ -52,3 +60,4 @@ help:
 
 icons:
 	./scripts/icons.sh -f
+
