@@ -6,8 +6,8 @@
 set -euo pipefail
 
 # Check required environment variable
-if [ -z "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
-  echo "Error: CLOUDFLARE_PAGES_PROJECT environment variable not set" >&2
+if [ -z "${WRANGLER_PAGES_PROJECT_NAME:-}" ]; then
+  echo "Error: WRANGLER_PAGES_PROJECT_NAME environment variable not set" >&2
   exit 1
 fi
 
