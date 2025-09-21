@@ -6,6 +6,9 @@
 
 set -euo pipefail
 
+# Unset API token to ensure we use OAuth authentication
+unset CLOUDFLARE_API_TOKEN
+
 # Check that required environment variables are set
 if [ -z "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
   echo "Error: CLOUDFLARE_PAGES_PROJECT environment variable not set"
@@ -13,30 +16,6 @@ if [ -z "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
   exit 1
 fi
 
-# Function to get Cloudflare account ID using wrangler
-get_cloudflare_account_id() {
-  # Use wrangler whoami to get account information
-  local whoami_output
-  whoami_output=$(wrangler whoami 2>/dev/null || echo "")
-  
-  if [ -z "$whoami_output" ]; then
-    echo "Error: Failed to get account information from wrangler" >&2
-    echo "Make sure you're logged in with 'wrangler login'" >&2
-    return 1
-  fi
-  
-  # Extract account ID from wrangler output
-  local account_id
-  account_id=$(echo "$whoami_output" | grep -o '[a-f0-9]\{32\}' | head -1 || echo "")
-  
-  if [ -z "$account_id" ]; then
-    echo "Error: Could not extract account ID from wrangler output" >&2
-    echo "Wrangler output: $whoami_output" >&2
-    return 1
-  fi
-  
-  echo "$account_id"
-}
 
 # Read all git push output and echo it
 while IFS= read -r line; do
@@ -45,6 +24,7 @@ done
 
 # After git push completes, get the deployment URL
 echo "Waiting for Cloudflare Pages deployment..."
+echo "Debug: Starting deployment URL detection..."
 echo -n "Getting deployment URL."
 
 # Try to get the deployment URL with a timeout
@@ -52,19 +32,21 @@ TIMEOUT=60  # 60 seconds timeout
 ELAPSED=0
 
 while [ $ELAPSED -lt $TIMEOUT ]; do
-  # Get the first deployment URL from the list (most recent)
-  # Look for URLs that end with .pages.dev to avoid partial matches
-  # Get the deployment list and extract URLs, handling table formatting
-  # Use a more flexible approach to find URLs that might be split across lines
-  DEPLOYMENT_OUTPUT=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null)
+  # Try to get the deployment URL using wrangler
+  DEPLOYMENT_OUTPUT=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null || echo "")
   URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' | head -1 || echo "")
   
-  # If that doesn't work, try to reconstruct URLs from the table
+  # If wrangler fails, try a fallback approach
   if [ -z "$URL" ]; then
-    # Look for the hash part and project name separately
-    HASH=$(echo "$DEPLOYMENT_OUTPUT" | grep -o 'https://[a-f0-9]\{8\}\.' | head -1 | sed 's|https://||' | sed 's|\.$||')
-    if [ -n "$HASH" ]; then
-      URL="https://${HASH}.${CLOUDFLARE_PAGES_PROJECT}.pages.dev"
+    # Try to construct URL from the most recent commit hash
+    COMMIT_HASH=$(git rev-parse --short HEAD)
+    if [ -n "$COMMIT_HASH" ]; then
+      # Generate a potential URL (this is a guess, but might work)
+      URL="https://${COMMIT_HASH}.${CLOUDFLARE_PAGES_PROJECT}.pages.dev"
+      # Test if this URL is accessible
+      if ! curl -s --head "$URL" | grep -q "200 OK"; then
+        URL=""
+      fi
     fi
   fi
   
@@ -72,42 +54,8 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo
     echo "Deployment URL: $URL"
     
-    # Get deployment ID using Cloudflare API
-    echo "Getting deployment ID from Cloudflare API..."
-    URL_HASH=$(echo "$URL" | grep -o '[a-f0-9]\{8\}' | head -1)
-    
-    if [ -n "$URL_HASH" ]; then
-      # Get account ID dynamically from API token
-      echo "Fetching account ID from API token..."
-      CLOUDFLARE_ACCOUNT_ID=$(get_cloudflare_account_id)
-      
-      if [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
-        # Use Cloudflare API to get deployment details
-        DEPLOYMENT_RESPONSE=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-          "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PAGES_PROJECT/deployments" 2>/dev/null || echo "")
-      
-        if [ -n "$DEPLOYMENT_RESPONSE" ]; then
-          # Extract deployment ID for the matching URL hash
-          DEPLOYMENT_ID=$(echo "$DEPLOYMENT_RESPONSE" | grep -o "\"id\":\"[^\"]*$URL_HASH[^\"]*\"" | head -1 | sed 's/"id":"\([^"]*\)"/\1/')
-          
-          if [ -n "$DEPLOYMENT_ID" ]; then
-            echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
-            
-            # Start tailing the deployment logs in the background
-            wrangler pages deployment tail --project-name="$CLOUDFLARE_PAGES_PROJECT" --deployment-id="$DEPLOYMENT_ID" &
-            TAIL_PID=$!
-          else
-            echo "Could not find deployment ID for URL hash $URL_HASH"
-          fi
-        else
-          echo "Could not fetch deployment data from API (check CLOUDFLARE_API_TOKEN)"
-        fi
-      else
-        echo "Failed to get account ID from wrangler"
-      fi
-    else
-      echo "Missing URL hash"
-    fi
+    # Skip deployment ID and log tailing for now
+    echo "Skipping deployment log tailing..."
     
     # Wait for deployment to be ready
     echo -n "Waiting for deployment to be ready."
