@@ -38,8 +38,7 @@ deploy: build
 	git push | ./scripts/open-deploy.sh
 
 preview: build
-	wrangler pages deploy ./public --project-name=$$CLOUDFLARE_PAGES_PROJECT \
-		| ./scripts/open-preview.sh
+	wrangler pages deploy ./public | ./scripts/open-preview.sh
 
 dash:
 	./scripts/open-dash.sh

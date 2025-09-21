@@ -26,7 +26,7 @@ ELAPSED=0
 while [ $ELAPSED -lt $TIMEOUT ]; do
   # Look for deployment with matching commit hash
   URL=$(
-    wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null \
+    wrangler pages deployment list --project-name="$WRANGLER_PAGES_PROJECT_NAME" 2>/dev/null \
       | grep "$COMMIT_HASH" \
       | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
       | head -1 \
