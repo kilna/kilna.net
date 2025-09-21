@@ -36,6 +36,15 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
       || echo ""
   )
 
+  # Also get the build URL for error cases
+  BUILD_URL=$(
+    wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null \
+      | grep "$COMMIT_HASH" \
+      | grep -o 'https://dash\.cloudflare\.com/[a-f0-9]\{32\}/pages/view/[^[:space:]]*' \
+      | head -1 \
+      || echo ""
+  )
+
   # If we can't find the specific commit, try the most recent deployment
   if [ -z "$URL" ] && [ $ELAPSED -gt 10 ]; then
     echo
@@ -43,6 +52,13 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     URL=$(
       wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null \
         | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
+        | head -1 \
+        || echo ""
+    )
+    # Also get the build URL for the most recent deployment
+    BUILD_URL=$(
+      wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null \
+        | grep -o 'https://dash\.cloudflare\.com/[a-f0-9]\{32\}/pages/view/[^[:space:]]*' \
         | head -1 \
         || echo ""
     )
@@ -55,7 +71,13 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
 done
 if [ -z "$URL" ]; then
   echo "Error: Deployment URL not found within $TIMEOUT seconds" >&2
-  exit 1
+  if [ -n "$BUILD_URL" ]; then
+    echo "Opening build URL to check build status..."
+    exec open "$BUILD_URL"
+  else
+    echo "No build URL found" >&2
+    exit 1
+  fi
 fi
 
 echo
@@ -73,4 +95,10 @@ done
 
 echo
 echo "Error: Deployment URL not ready within $TIMEOUT seconds" >&2
-exit 1
+if [ -n "$BUILD_URL" ]; then
+  echo "Opening build URL to check build status..."
+  exec open "$BUILD_URL"
+else
+  echo "No build URL found" >&2
+  exit 1
+fi
