@@ -13,42 +13,42 @@ done
 # Get the current git commit hash
 COMMIT_HASH=$(git rev-parse HEAD)
 echo "Looking for deployment with commit: ${COMMIT_HASH:0:7}"
+echo "Debug: Using project name: $CLOUDFLARE_PAGES_PROJECT"
 
 echo -n "Getting deployment URL."
 TIMEOUT=60
 ELAPSED=0
 while [ $ELAPSED -lt $TIMEOUT ]; do
-  # Debug: show what we're looking for
-  if [ $ELAPSED -eq 0 ]; then
-    echo
-    echo "Debug: Looking for commit hash: $COMMIT_HASH"
-    echo "Debug: Testing wrangler authentication..."
-    wrangler whoami
-    echo "Debug: Wrangler deployment list output:"
-    (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>&1 | head -10
-  fi
-  
-  # Look for deployment with matching commit hash
-  # Ensure we're in the project directory where wrangler.toml exists
-  URL=$(
-    (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>/dev/null \
-      | grep "$COMMIT_HASH" \
-      | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
-      | head -1 \
-      || echo ""
-  )
-  
-  # If we can't find the specific commit, try the most recent deployment
-  if [ -z "$URL" ] && [ $ELAPSED -gt 10 ]; then
-    echo
-    echo "Could not find deployment for commit $COMMIT_HASH, trying most recent..."
-    URL=$(
-      (cd "$(dirname "$0")/.." && wrangler pages deployment list) 2>/dev/null \
-        | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
-        | head -1 \
-        || echo ""
-    )
-  fi
+         # Debug: show what we're looking for
+         if [ $ELAPSED -eq 0 ]; then
+           echo
+           echo "Debug: Looking for commit hash: $COMMIT_HASH"
+           echo "Debug: Testing wrangler authentication..."
+           wrangler whoami
+           echo "Debug: Wrangler deployment list output:"
+           wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>&1 | head -10
+         fi
+
+         # Look for deployment with matching commit hash
+         URL=$(
+           wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null \
+             | grep "$COMMIT_HASH" \
+             | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
+             | head -1 \
+             || echo ""
+         )
+
+         # If we can't find the specific commit, try the most recent deployment
+         if [ -z "$URL" ] && [ $ELAPSED -gt 10 ]; then
+           echo
+           echo "Could not find deployment for commit $COMMIT_HASH, trying most recent..."
+           URL=$(
+             wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null \
+               | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
+               | head -1 \
+               || echo ""
+           )
+         fi
   
   [ -n "$URL" ] && break
   echo -n "."
