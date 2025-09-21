@@ -32,10 +32,13 @@ kill-server:
 clean:
 	rm -rf public
 
-deploy: build
+push:
 	git add -A
-	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)" --allow-empty
-	git push | ./scripts/open-deploy.sh
+	git commit --allow-empty
+	git push
+
+deploy: build push
+	./scripts/open-deploy.sh
 
 preview: build
 	script -q /dev/null \
