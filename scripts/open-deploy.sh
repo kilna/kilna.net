@@ -9,6 +9,9 @@ set -euo pipefail
 # Unset API token to ensure we use OAuth authentication
 unset CLOUDFLARE_API_TOKEN
 
+# Initialize TAIL_PID variable
+TAIL_PID=""
+
 # Check that required environment variables are set
 if [ -z "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
   echo "Error: CLOUDFLARE_PAGES_PROJECT environment variable not set"
@@ -54,8 +57,26 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo
     echo "Deployment URL: $URL"
     
-    # Skip deployment ID and log tailing for now
-    echo "Skipping deployment log tailing..."
+    # Get deployment ID and start log tailing
+    echo "Getting deployment details from wrangler..."
+    URL_HASH=$(echo "$URL" | grep -o '[a-f0-9]\{8\}' | head -1)
+    
+    if [ -n "$URL_HASH" ]; then
+      # Get deployment ID from wrangler output
+      DEPLOYMENT_ID=$(wrangler pages deployment list --project-name="$CLOUDFLARE_PAGES_PROJECT" 2>/dev/null | grep "$URL_HASH" | head -1 | awk '{print $1}' || echo "")
+      
+      if [ -n "$DEPLOYMENT_ID" ]; then
+        echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
+        
+        # Start tailing the deployment logs in the background
+        wrangler pages deployment tail --project-name="$CLOUDFLARE_PAGES_PROJECT" --deployment-id="$DEPLOYMENT_ID" &
+        TAIL_PID=$!
+      else
+        echo "Could not find deployment ID for URL hash $URL_HASH"
+      fi
+    else
+      echo "Missing URL hash"
+    fi
     
     # Wait for deployment to be ready
     echo -n "Waiting for deployment to be ready."
@@ -65,7 +86,7 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     done
     
     # Stop tailing once deployment is ready
-    if [ -n "$TAIL_PID" ]; then
+    if [ -n "${TAIL_PID:-}" ] && [ "$TAIL_PID" != "" ]; then
       kill $TAIL_PID 2>/dev/null || true
       wait $TAIL_PID 2>/dev/null || true
     fi
