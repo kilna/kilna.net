@@ -23,7 +23,8 @@ echo -n "Getting deployment URL."
 
 while true; do
   # Get the first deployment URL from the list (most recent)
-  URL=$(wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null | grep -o 'https://[^[:space:]]*' | head -1 || echo "")
+  # Look for URLs that end with .pages.dev to avoid partial matches
+  URL=$(wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null | grep -o 'https://[^[:space:]]*\.pages\.dev' | head -1 || echo "")
   if [ -z "$URL" ]; then
     echo -n "."
     sleep 3
