@@ -45,11 +45,19 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
   if [ -n "$URL" ]; then
     echo
     echo "Deployment URL: $URL"
-    echo "Tailing build logs while waiting for deployment..."
     
-    # Start tailing the deployment logs in the background
-    wrangler pages deployment tail --project-name="$PROJECT_NAME" &
-    TAIL_PID=$!
+    # Get the deployment ID for tailing
+    DEPLOYMENT_ID=$(echo "$DEPLOYMENT_OUTPUT" | grep -A 10 -B 10 "$URL" | grep -o '[a-f0-9]\{8\}' | head -1 || echo "")
+    
+    if [ -n "$DEPLOYMENT_ID" ]; then
+      echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
+      
+      # Start tailing the deployment logs in the background
+      wrangler pages deployment tail --project-name="$PROJECT_NAME" --deployment-id="$DEPLOYMENT_ID" &
+      TAIL_PID=$!
+    else
+      echo "Could not get deployment ID for tailing, proceeding without logs..."
+    fi
     
     # Wait for deployment to be ready
     echo -n "Waiting for deployment to be ready."
@@ -59,8 +67,10 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     done
     
     # Stop tailing once deployment is ready
-    kill $TAIL_PID 2>/dev/null || true
-    wait $TAIL_PID 2>/dev/null || true
+    if [ -n "$DEPLOYMENT_ID" ] && [ -n "$TAIL_PID" ]; then
+      kill $TAIL_PID 2>/dev/null || true
+      wait $TAIL_PID 2>/dev/null || true
+    fi
     
     echo
     echo "Deployment ready! Opening $URL"
@@ -77,4 +87,3 @@ echo
 echo "Timeout reached. Deployment may still be processing."
 echo "Check the Cloudflare Pages dashboard:"
 echo "https://dash.cloudflare.com/046e8f301fab8b218d3f51110cc7034f/pages/view/$PROJECT_NAME"
-
