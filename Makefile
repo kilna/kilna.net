@@ -1,6 +1,8 @@
 # Simple Hugo Makefile for contact-kilna
 SHELL := /usr/bin/env bash
 SERVER_PORT := 4291
+CLOUDFLARE_ACCOUNT_ID := 046e8f301fab8b218d3f51110cc7034f
+CLOUDFLARE_PAGES_PROJECT := kilna-net
 #PARAMS := --disableFastRender --logLevel debug --printPathWarnings --printUnusedTemplates
 PARAMS := --disableFastRender --port $(SERVER_PORT)
 
@@ -37,16 +39,10 @@ clean:
 	rm -rf public
 
 deploy: build
-	@echo "Site built successfully. Ready for deployment to Cloudflare Pages."
 	git add -A
 	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
 	git push
-
-cloudflare:
-	./scripts/cloudflare.sh
-
-cloudflare-api:
-	./scripts/cloudflare.sh api
+	open https://dash.cloudflare.com/$(CLOUDFLARE_ACCOUNT_ID)/pages/view/$(CLOUDFLARE_PAGES_PROJECT)
 
 help:
 	@echo "Available targets:"
@@ -56,8 +52,6 @@ help:
 	@echo "  prebuild   - Setup dependencies for Cloudflare Pages"
 	@echo "  clean      - Remove generated files"
 	@echo "  deploy     - Build site for deployment"
-	@echo "  cloudflare - Open Cloudflare Pages deployment dashboard"
-	@echo "  cloudflare-api - Find and open specific deployment via API (requires CLOUDFLARE_API_TOKEN)"
 	@echo "  help       - Show this help message"
 	@echo "  icons      - Download/refresh SVG icons from icons.yaml"
 
