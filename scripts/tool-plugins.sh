@@ -13,23 +13,24 @@ while IFS= read -r spec; do
   
   tool=$(echo "$spec" | cut -d' ' -f1)
   version=$(echo "$spec" | cut -d' ' -f2)
-  plugin=$(echo "$spec" | cut -d' ' -f3)
   
-  # Add plugin if it doesn't exist
-  if ! asdf plugin list | grep -q "^$plugin$"; then
-    echo "Adding asdf plugin: $plugin"
-    asdf plugin add $plugin || {
-      echo "Warning: Failed to add plugin $plugin, continuing..."
+  # Add plugin if it doesn't exist (plugin name is same as tool name)
+  if ! asdf plugin list | grep -q "^$tool$"; then
+    echo "Adding asdf plugin: $tool"
+    asdf plugin add $tool || {
+      echo "Warning: Failed to add plugin $tool, continuing..."
       continue
     }
   fi
   
-  # Install version if not already installed
-  if ! asdf list $tool 2>/dev/null | grep -q $version; then
+  # Install version if not already installed (check via asdf list)
+  if ! asdf list $tool 2>/dev/null | grep -q "^[[:space:]]*$version[[:space:]]*$"; then
     echo "Installing $tool version $version"
     asdf install $tool $version || {
       echo "Warning: Failed to install $tool $version, continuing..."
       continue
     }
+  else
+    echo "$tool version $version is already installed"
   fi
 done < .tool-plugins
