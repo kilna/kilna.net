@@ -22,8 +22,9 @@ echo "Waiting for Cloudflare Pages deployment..."
 echo -n "Getting deployment URL."
 
 while true; do
-  URL=$(wrangler pages deployment list --project-name="$PROJECT_NAME" --format=json | jq -r '.[0].url' 2>/dev/null || echo "")
-  if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+  # Get the first deployment URL from the list (most recent)
+  URL=$(wrangler pages deployment list --project-name="$PROJECT_NAME" 2>/dev/null | grep -o 'https://[^[:space:]]*' | head -1 || echo "")
+  if [ -z "$URL" ]; then
     echo -n "."
     sleep 3
   else
