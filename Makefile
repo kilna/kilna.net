@@ -27,9 +27,6 @@ tool-plugins:
 	./scripts/tool-plugins.sh
 
 server: kill-server
-	hugo server $(PARAMS)
-
-launch: kill-server
 	hugo server $(PARAMS) | ./scripts/open-hugo-url.sh
 
 kill-server:
@@ -41,19 +38,22 @@ clean:
 deploy: build
 	git add -A
 	git commit -m "Deploy: $(shell date +%Y-%m-%d\ %H:%M:%S)"
-	git push
-	open https://dash.cloudflare.com/$(CLOUDFLARE_ACCOUNT_ID)/pages/view/$(CLOUDFLARE_PAGES_PROJECT)
+	git push | ./scripts/open-deploy.sh $(CLOUDFLARE_PAGES_PROJECT)
+
+preview: build
+	wrangler pages deploy ./public --project-name=$(CLOUDFLARE_PAGES_PROJECT) \
+		| ./scripts/open-preview.sh
 
 help:
 	@echo "Available targets:"
-	@echo "  build      - Build the site"
-	@echo "  server     - Start development server"
-	@echo "  launch     - Start server and auto-detect URL to open"
-	@echo "  prebuild   - Setup dependencies for Cloudflare Pages"
-	@echo "  clean      - Remove generated files"
-	@echo "  deploy     - Build site for deployment"
-	@echo "  help       - Show this help message"
-	@echo "  icons      - Download/refresh SVG icons from icons.yaml"
+	@echo "  build   - Build the site"
+	@echo "  server  - Start development server"
+	@echo "  launch  - Start server and auto-detect URL to open"
+	@echo "  deploy  - Build and deploy via git push"
+	@echo "  preview - Deploy to Cloudflare Pages preview and open in browser"
+	@echo "  clean   - Remove generated files"
+	@echo "  help    - Show this help message"
+	@echo "  icons   - Download/refresh SVG icons from icons.yaml"
 
 icons:
 	./scripts/icons.sh
