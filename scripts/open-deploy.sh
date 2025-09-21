@@ -47,7 +47,8 @@ while [ $ELAPSED -lt $TIMEOUT ]; do
     echo "Deployment URL: $URL"
     
     # Get the deployment ID for tailing
-    DEPLOYMENT_ID=$(echo "$DEPLOYMENT_OUTPUT" | grep -A 10 -B 10 "$URL" | grep -o '[a-f0-9]\{8\}' | head -1 || echo "")
+    # Extract the full UUID from the Build column that corresponds to this URL
+    DEPLOYMENT_ID=$(echo "$DEPLOYMENT_OUTPUT" | grep -A 5 -B 5 "$URL" | grep -o '[a-f0-9]\{8\}-[a-f0-9]\{4\}-[a-f0-9]\{4\}-[a-f0-9]\{4\}-[a-f0-9]\{12\}' | head -1 || echo "")
     
     if [ -n "$DEPLOYMENT_ID" ]; then
       echo "Tailing build logs for deployment $DEPLOYMENT_ID..."
