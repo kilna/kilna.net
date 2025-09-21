@@ -2,10 +2,18 @@
 
 set -eo pipefail
 
-for spec in $(cat .tool-plugins); do
-  tool=$(echo $spec | cut -d' ' -f1)
-  version=$(echo $spec | cut -d' ' -f2)
-  plugin=$(echo $spec | cut -d' ' -f3)
+while IFS= read -r spec; do
+  # Skip empty lines and comments (lines starting with # or containing only whitespace)
+  spec=$(echo "$spec" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')  # trim whitespace
+  [[ -z "$spec" || "$spec" =~ ^# ]] && continue
+  
+  # Remove inline comments (everything after # that's not at the start of line)
+  spec=$(echo "$spec" | sed 's/[[:space:]]*#.*$//')
+  [[ -z "$spec" ]] && continue
+  
+  tool=$(echo "$spec" | cut -d' ' -f1)
+  version=$(echo "$spec" | cut -d' ' -f2)
+  plugin=$(echo "$spec" | cut -d' ' -f3)
   
   # Add plugin if it doesn't exist
   if ! asdf plugin list | grep -q "^$plugin$"; then
@@ -24,4 +32,4 @@ for spec in $(cat .tool-plugins); do
       continue
     }
   fi
-done
+done < .tool-plugins
