@@ -38,10 +38,12 @@ deploy: build
 	git push | ./scripts/open-deploy.sh
 
 preview: build
-	wrangler pages deploy ./public | ./scripts/open-preview.sh
+	script -q /dev/null \
+	  bash -c "wrangler pages deploy ./public --commit-dirty=true" \
+		| ./scripts/open-preview.sh
 
 dash:
-	./scripts/open-dash.sh
+	open $$CLOUDFLARE_PAGES_DASHBOARD_URL
 
 help:
 	@echo "Available targets:"

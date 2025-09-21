@@ -5,12 +5,6 @@
 
 set -euo pipefail
 
-# Check required environment variable
-if [ -z "${WRANGLER_PAGES_PROJECT_NAME:-}" ]; then
-  echo "Error: WRANGLER_PAGES_PROJECT_NAME environment variable not set" >&2
-  exit 1
-fi
-
 # Read and echo git push output
 while IFS= read -r line; do
   echo "$line"
@@ -26,7 +20,7 @@ ELAPSED=0
 while [ $ELAPSED -lt $TIMEOUT ]; do
   # Look for deployment with matching commit hash
   URL=$(
-    wrangler pages deployment list --project-name="$WRANGLER_PAGES_PROJECT_NAME" 2>/dev/null \
+    wrangler pages deployment list 2>/dev/null \
       | grep "$COMMIT_HASH" \
       | grep -o 'https://[a-f0-9]\{8\}\.[^[:space:]]*\.pages\.dev' \
       | head -1 \
