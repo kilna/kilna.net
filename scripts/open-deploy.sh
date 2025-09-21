@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
 # Wait for git push to complete, then get deployment URL and open it
-# Usage: git push | ./scripts/open-deployment.sh <project-name>
+# Usage: git push | ./scripts/open-deployment.sh
+# Project name comes from CLOUDFLARE_PAGES_PROJECT environment variable
 
 set -euo pipefail
+
+# Check that required environment variables are set
+if [ -z "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
+  echo "Error: CLOUDFLARE_PAGES_PROJECT environment variable not set"
+  echo "Make sure your .envrc file exports CLOUDFLARE_PAGES_PROJECT"
+  exit 1
+fi
 
 # Function to get Cloudflare account ID using wrangler
 get_cloudflare_account_id() {
