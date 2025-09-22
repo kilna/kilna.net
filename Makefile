@@ -58,9 +58,10 @@ help:
 	@echo "  build   - Build the site"
 	@echo "  server  - Start development server"
 	@echo "  launch  - Start server and auto-detect URL to open"
-	@echo "  deploy  - Build and deploy via git push (requires clean working copy)"
+	@echo "  deploy  - Build and deploy via git (requires clean working copy)"
 	@echo "  preview - Deploy to Cloudflare Pages preview and open in browser"
 	@echo "  clean   - Remove generated files"
+	@echo "  push    - Commit and push to origin"
 	@echo "  help    - Show this help message"
 	@echo "  icons   - Download/refresh SVG icons from icons.yaml"
 
