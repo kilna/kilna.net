@@ -32,20 +32,17 @@ kill-server:
 clean:
 	rm -rf public
 
-git-clean:
+push:
+	git add -A
+	git commit
+	git push
+
+deploy: build
 	@if [ -n "$$(git status --porcelain)" ]; then \
 		echo "Error: Working directory is not clean. Please commit or stash changes first." >&2; \
 		git status --short >&2; \
 		exit 1; \
 	fi
-
-push: git-clean
-	git add -A
-	git commit
-	git push
-
-deploy: build push
-
 	./scripts/open-deploy.sh
 
 preview: build
