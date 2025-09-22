@@ -15,7 +15,7 @@ export HUGO_BASEURL=http://localhost:$(SERVER_PORT)
 -include .env
 endif
 
-.PHONY: build tool-plugins server launch clean deploy dash help icons
+.PHONY: build tool-plugins server launch clean git-clean push deploy dash help icons
 
 build: tool-plugins
 	hugo
@@ -32,12 +32,20 @@ kill-server:
 clean:
 	rm -rf public
 
-push:
+git-clean:
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		echo "Error: Working directory is not clean. Please commit or stash changes first." >&2; \
+		git status --short >&2; \
+		exit 1; \
+	fi
+
+push: git-clean
 	git add -A
-	git commit --allow-empty
+	git commit
 	git push
 
 deploy: build push
+
 	./scripts/open-deploy.sh
 
 preview: build
@@ -53,7 +61,7 @@ help:
 	@echo "  build   - Build the site"
 	@echo "  server  - Start development server"
 	@echo "  launch  - Start server and auto-detect URL to open"
-	@echo "  deploy  - Build and deploy via git push"
+	@echo "  deploy  - Build and deploy via git push (requires clean working copy)"
 	@echo "  preview - Deploy to Cloudflare Pages preview and open in browser"
 	@echo "  clean   - Remove generated files"
 	@echo "  help    - Show this help message"
