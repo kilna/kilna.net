@@ -1,15 +1,25 @@
 {{- $url := .URL | safeURL -}}
 {{- $identifier := .Identifier -}}
 {{- $name := .Name -}}
+{{- $subtitle := "" -}}
+{{- with .Params.subtitle -}}
+  {{- $subtitle = . -}}
+{{- end -}}
 {{- $icon := $identifier -}}
 {{- if .Params.icon -}}
   {{- $icon = .Params.icon -}}
 {{- end -}}
 
-{{- /* Determine if link should open in new tab */ -}}
-{{- $shouldOpenInNewTab := and (not (hasPrefix $url "mailto:")) (not (hasPrefix $url "tel:")) (not (strings.HasSuffix $url ".mecard")) -}}
+{{- /* MeCard should open directly; vCard is better offered as a file download. */ -}}
+{{- $isDownload := strings.HasSuffix $url ".vcf" -}}
+{{- $shouldOpenInNewTab := and (not (hasPrefix $url "mailto:")) (not (hasPrefix $url "tel:")) (not $isDownload) -}}
 
-<a href="{{ $url }}" class="social-button {{ $identifier }}"{{ if $shouldOpenInNewTab }} target="_blank" rel="noopener"{{ end }}{{ if strings.HasSuffix $url ".mecard" }} download{{ end }}{{ with .Params.clipboard }} data-clipboard="{{ . }}"{{ end }}{{ with .Params.style }} style="{{ . | safeCSS }}"{{ end }}>
+<a href="{{ $url }}" class="social-button {{ $identifier }}"{{ if $shouldOpenInNewTab }} target="_blank" rel="noopener"{{ end }}{{ if $isDownload }} download{{ end }}{{ with .Params.clipboard }} data-clipboard="{{ . }}"{{ end }}{{ with .Params.style }} style="{{ . | safeCSS }}"{{ end }}>
   {{ partial "components/icon.html" (dict "icon" $icon) }}
-  {{ $name }}
+  <span class="social-button__content">
+    <span class="social-button__title">{{ $name }}</span>
+    {{ with $subtitle }}
+    <span class="social-button__subtitle">{{ . }}</span>
+    {{ end }}
+  </span>
 </a>
