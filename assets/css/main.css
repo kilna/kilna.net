@@ -138,6 +138,17 @@ a:hover {
   text-align: center;
 }
 
+.project-description p {
+  color: inherit;
+  font-weight: inherit;
+  text-align: inherit;
+  margin-bottom: 0;
+}
+
+.project-description a {
+  color: inherit;
+}
+
 .project-links {
   display: flex;
   gap: 1rem;

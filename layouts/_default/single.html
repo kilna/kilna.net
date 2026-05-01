@@ -4,7 +4,9 @@
 <h1>{{ .Title }}</h1>
 
 {{ if .Description }}
-<p class="project-description">{{ .Description }}</p>
+<div class="project-description">
+  {{ .Description | markdownify }}
+</div>
 {{ end }}
 
 {{ if .Params.image }}
