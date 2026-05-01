@@ -1,12 +1,10 @@
-# MeCard files - set proper MIME type for Cloudflare Pages
-/mecard
+/kilna.mecard
   Content-Type: text/mecard
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, OPTIONS
   Access-Control-Allow-Headers: Content-Type
 
-# vCard files - set proper MIME type for Cloudflare Pages
-/vcard
+/kilna.vcf
   Content-Type: text/vcard
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, OPTIONS

@@ -1,8 +1,8 @@
 ---
-title: "Kilna vCard"
-slug: "vcard"
-outputs: ["vcard"]
+title: "Kilna Contact Card"
+outputs: ["mecard", "vcard"]
 params:
+  name: "Kilna"
   firstname: "Anthony"
   lastname: "Kilna"
   fullname: "Kilna, Anthony"

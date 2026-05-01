@@ -1,6 +1,6 @@
 {{/*
   vCard template - generates full vCard contact information with photo
-  Accessible at /vcard
+  Accessible at /kilna.vcf
 */}}
 {{- if eq .Kind "page" -}}
 BEGIN:VCARD

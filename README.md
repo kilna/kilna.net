@@ -112,8 +112,8 @@ kilna.net/
 - **Professional**: LinkedIn, IMDb, GitHub
 
 ### Digital Business Cards
-- **MeCard**: `/mecard` - Mobile-friendly contact format
-- **vCard**: `/vcard` - Standard vCard format for contacts
+- **MeCard**: `/kilna.mecard` - Mobile-friendly contact format
+- **vCard**: `/kilna.vcf` - Standard vCard format for contacts
 
 ### QR Code Integration
 - QR codes for easy sharing and contact exchange
