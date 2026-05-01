@@ -94,7 +94,7 @@ menus:
     url: /kilna.mecard
     params:
       icon: contacts
-      subtitle: "Android/iOS compatible contact file"
+      subtitle: "Android/iOS compatible contact"
       style: "font-size: 2rem; animation: bounce 4s infinite;"
   - identifier: email
     weight: 2
@@ -118,7 +118,7 @@ menus:
     url: /kilna.vcf
     params:
       icon: vcard
-      subtitle: "Universal contact file - mobile and desktop compatible"
+      subtitle: "Universal mobile and desktop contact file"
       style: "--bg:#d97706;--hover-bg:#b45309;"
   - identifier: telegram
     weight: 5
