@@ -95,6 +95,7 @@ menus:
     params:
       icon: contacts
       subtitle: "Android/iOS compatible contact"
+      subtitle_style: "font-size: 0.6em;"
       style: "font-size: 2rem; animation: bounce 4s infinite;"
   - identifier: email
     weight: 2
@@ -119,6 +120,7 @@ menus:
     params:
       icon: vcard
       subtitle: "Universal mobile and desktop contact file"
+      subtitle_style: "font-size: 0.6em;"
       style: "--bg:#d97706;--hover-bg:#b45309;"
   - identifier: telegram
     weight: 5
@@ -210,6 +212,7 @@ menus:
     params:
       icon: imdb
       subtitle: "imdb.com/name/nm4671136"
+      subtitle_style: "font-size: 0.8em;"
       style: "--bg:#f5c518;--hover-bg:#d4a015;"
   - identifier: github
     weight: 10

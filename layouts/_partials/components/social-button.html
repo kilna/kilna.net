@@ -5,6 +5,10 @@
 {{- with .Params.subtitle -}}
   {{- $subtitle = . -}}
 {{- end -}}
+{{- $subtitleStyle := "" -}}
+{{- with .Params.subtitle_style -}}
+  {{- $subtitleStyle = . -}}
+{{- end -}}
 {{- $icon := $identifier -}}
 {{- if .Params.icon -}}
   {{- $icon = .Params.icon -}}
@@ -19,7 +23,7 @@
   <span class="social-button__content">
     <span class="social-button__title">{{ $name }}</span>
     {{ with $subtitle }}
-    <span class="social-button__subtitle">{{ . }}</span>
+    <span class="social-button__subtitle"{{ with $subtitleStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ . }}</span>
     {{ end }}
   </span>
 </a>
