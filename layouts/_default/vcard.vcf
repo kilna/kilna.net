@@ -3,10 +3,11 @@
   Accessible at /kilna.vcf
 */}}
 {{- if eq .Kind "page" -}}
+{{- $displayName := or .Params.name .Params.fullname -}}
 BEGIN:VCARD
 VERSION:3.0
-N:{{ .Params.lastname }};{{ .Params.firstname }};;;
-FN:{{ .Params.fullname }}
+N:;{{ $displayName }};;;
+FN:{{ $displayName }}
 ORG:{{ .Params.organization }}
 TITLE:{{ .Params.title }}
 {{- if .Params.birthday }}
@@ -16,11 +17,12 @@ BDAY:{{ .Params.birthday }}
 ADR:;;{{ .Params.address.city }};{{ .Params.address.state }};;{{ .Params.address.country }}
 {{- end }}
 TEL;TYPE=CELL:{{ .Params.phone }}
-TEL;TYPE=WORK:{{ .Params.phone }}
 EMAIL;TYPE=INTERNET:{{ .Params.email }}
-EMAIL;TYPE=WORK:{{ .Params.email }}
 URL:{{ .Params.url }}
 PHOTO;VALUE=URI:{{ .Params.photo_url }}
+{{- with .Params.social_profiles }}
+NOTE:{{- range $index, $profile := . }}{{ if gt $index 0 }} | {{ end }}{{ $profile.type }}: {{ $profile.url }}{{- end }}
+{{- end }}
 {{- range .Params.social_profiles }}
 X-SOCIALPROFILE;type={{ .type }}:{{ .url }}
 {{- end }}
